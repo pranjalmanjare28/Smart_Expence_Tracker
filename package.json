@@ -1,0 +1,31 @@
+{
+  "name": "entp-expense-tracker-system",
+  "version": "1.0.0",
+  "description": "ENTP — Expense Tracker System: Full-Stack Financial Management Website",
+  "private": true,
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "start:backend": "npm --prefix backend start",
+    "build:frontend": "npm --prefix frontend run build",
+    "test:backend": "npm --prefix backend test",
+    "test:frontend": "npm --prefix frontend test",
+    "test": "npm --prefix backend test && npm --prefix frontend test",
+    "db:generate": "npm --prefix backend run db:generate",
+    "db:migrate": "npm --prefix backend run db:migrate",
+    "db:seed": "npm --prefix backend run db:seed"
+  },
+  "keywords": [
+    "expense-tracker",
+    "budgeting",
+    "split-bills",
+    "finance",
+    "full-stack",
+    "react",
+    "express",
+    "postgresql",
+    "prisma"
+  ],
+  "author": "ENTP Team",
+  "license": "ISC"
+}
