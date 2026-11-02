@@ -1,6 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-const Database = require("better-sqlite3");
+const { DatabaseSync } = require("node:sqlite");
 const { PrismaClient } = require("@prisma/client");
 
 let prisma = null;
@@ -15,9 +15,19 @@ function initSqlite() {
   }
 
   const dbPath = path.join(dataDir, "entp.db");
-  sqliteDb = new Database(dbPath);
-  sqliteDb.pragma("journal_mode = WAL");
-  sqliteDb.pragma("foreign_keys = ON");
+  sqliteDb = new DatabaseSync(dbPath);
+  sqliteDb.exec("PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;");
+  sqliteDb.transaction = (fn) => (...args) => {
+    sqliteDb.exec("BEGIN TRANSACTION;");
+    try {
+      const res = fn(...args);
+      sqliteDb.exec("COMMIT;");
+      return res;
+    } catch (err) {
+      sqliteDb.exec("ROLLBACK;");
+      throw err;
+    }
+  };
 
   // Create tables matching Prisma PostgreSQL schema
   sqliteDb.exec(`
