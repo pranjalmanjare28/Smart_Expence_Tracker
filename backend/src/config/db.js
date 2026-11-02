@@ -198,6 +198,17 @@ function initSqlite() {
 
 // Attempt PostgreSQL connection via Prisma
 async function checkDatabaseConnection() {
+  const mongoUri = process.env.MONGODB_URI;
+  if (mongoUri && (mongoUri.startsWith("mongodb://") || mongoUri.startsWith("mongodb+srv://"))) {
+    try {
+      const mongoose = require("mongoose");
+      await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 5000 });
+      console.log("🍃 [Database] Connected to MongoDB Atlas cluster!");
+    } catch (err) {
+      console.warn("⚠️ [Database Notice] MongoDB Atlas connection error:", err.message);
+    }
+  }
+
   const databaseUrl = process.env.DATABASE_URL;
 
   if (databaseUrl && !databaseUrl.includes("localhost:5432/entp_db")) {
