@@ -2,16 +2,24 @@
 /**
  * ENTP MongoDB Atlas Sync & Seed Script
  * Allows viewing the entire ENTP database in MongoDB Atlas & VS Code MongoDB Extension.
- *
- * Usage:
- *   node scripts/syncToMongo.js "mongodb+srv://<username>:<password>@cluster.mongodb.net/entp?retryWrites=true&w=majority"
- *   OR set MONGODB_URI in backend/.env and run: npm run db:mongo
  */
 
-require("dotenv").config({ path: require("path").join(__dirname, "../backend/.env") });
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const { getDatabase } = require("../backend/src/config/db");
+const path = require("path");
+
+// Resolve dependencies from backend/node_modules
+const backendDir = path.join(__dirname, "../backend");
+const backendNodeModules = path.join(backendDir, "node_modules");
+
+try {
+  require(path.join(backendNodeModules, "dotenv")).config({
+    path: path.join(backendDir, ".env"),
+  });
+} catch (e) {
+  // dotenv optional if args passed
+}
+
+const mongoose = require(path.join(backendNodeModules, "mongoose"));
+const { getDatabase } = require(path.join(backendDir, "src/config/db"));
 const {
   MongoUser,
   MongoCategory,
@@ -20,27 +28,36 @@ const {
   MongoGroup,
   MongoRecurring,
   MongoNotification,
-} = require("../backend/src/models/mongoModels");
+} = require(path.join(backendDir, "src/models/mongoModels"));
 
-const mongoUri = process.argv[2] || process.env.MONGODB_URI;
+let rawUri = process.argv[2] || process.env.MONGODB_URI;
 
-if (!mongoUri) {
+if (!rawUri) {
   console.error("❌ Error: Please provide a MongoDB Atlas connection string!");
   console.log("\nExample usage:");
-  console.log('  node scripts/syncToMongo.js "mongodb+srv://<user>:<password>@cluster0.abcde.mongodb.net/entp?retryWrites=true&w=majority"');
-  console.log("Or add MONGODB_URI to backend/.env and re-run.");
+  console.log('  node scripts/syncToMongo.js "mongodb+srv://user:pass@cluster.mongodb.net/entp?retryWrites=true&w=majority"');
   process.exit(1);
 }
 
+// Ensure database name 'entp' is included in URI
+let mongoUri = rawUri.trim().replace(/^["']|["']$/g, "");
+if (mongoUri.endsWith("/")) {
+  mongoUri += "entp?retryWrites=true&w=majority";
+} else if (mongoUri.endsWith(".mongodb.net")) {
+  mongoUri += "/entp?retryWrites=true&w=majority";
+} else if (mongoUri.includes("mongodb.net/?")) {
+  mongoUri = mongoUri.replace("mongodb.net/?", "mongodb.net/entp?");
+}
+
 async function syncToMongo() {
-  console.log("🍃 Connecting to MongoDB Atlas...");
-  await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 10000 });
-  console.log("✅ Successfully connected to MongoDB Atlas cluster!");
+  console.log("🍃 Connecting to MongoDB Atlas cluster...");
+  await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 15000 });
+  console.log("✅ Successfully connected to MongoDB Atlas!");
 
   const db = getDatabase();
   const s = db.sqlite;
 
-  console.log("📦 Syncing collections to MongoDB Atlas database...");
+  console.log("📦 Syncing ENTP collections to MongoDB Atlas...");
 
   // 1. Categories
   const categories = s.prepare("SELECT * FROM categories").all();
@@ -52,7 +69,7 @@ async function syncToMongo() {
   const users = s.prepare("SELECT * FROM users").all();
   await MongoUser.deleteMany({});
   await MongoUser.insertMany(users);
-  console.log(`  ✓ Synced ${users.length} users (demo: demo@entp.app)`);
+  console.log(`  ✓ Synced ${users.length} users (demo account: demo@entp.app)`);
 
   // 3. Expenses
   const expenses = s.prepare("SELECT * FROM expenses").all();
@@ -173,7 +190,7 @@ async function syncToMongo() {
 
   console.log("\n🎉 ALL COLLECTIONS SUCCESSFULLY POPULATED IN MONGODB ATLAS!");
   console.log("\n👉 How to view in VS Code MongoDB Extension:");
-  console.log("  1. In VS Code, click the MongoDB leaf icon in the left sidebar.");
+  console.log("  1. In VS Code, click the MongoDB leaf icon in the left activity bar.");
   console.log("  2. Click 'Add Connection' / 'Connect with Connection String'.");
   console.log(`  3. Paste: ${mongoUri.replace(/:[^:]*@/, ":****@")}`);
   console.log("  4. You will see the 'entp' database with collections: users, expenses, budgets, groups, categories, recurring, notifications!");
