@@ -53,7 +53,7 @@ async function exportExpensesCSV(req, res, next) {
     res.setHeader("Content-Type", "text/csv; charset=utf-8");
     res.setHeader(
       "Content-Disposition",
-      `attachment; filename="entp-expenses-${new Date().toISOString().split("T")[0]}.csv"`
+      `attachment; filename="smart-expenses-${new Date().toISOString().split("T")[0]}.csv"`
     );
     res.status(200).send(csvContent);
   } catch (error) {

@@ -1,4 +1,4 @@
-# ENTP — API Reference Documentation
+# Smart Expenses Tracker — API Reference Documentation
 
 All endpoints (except public auth & health) require an active session via an HttpOnly cookie (`token`) or an `Authorization: Bearer <token>` header. Responses follow a standardized JSON envelope format.
 
@@ -34,7 +34,7 @@ Authenticates a user and sets an HttpOnly session cookie.
 - **Request Body**:
   ```json
   {
-    "email": "demo@entp.app",
+    "email": "demo@smartexpenses.app",
     "password": "Password@123"
   }
   ```

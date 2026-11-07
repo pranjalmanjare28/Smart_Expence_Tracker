@@ -22,6 +22,7 @@ export function AuthProvider({ children }) {
       }
     } catch (err) {
       setUser(null);
+      localStorage.removeItem("smart_expenses_token");
       localStorage.removeItem("entp_token");
     } finally {
       setLoading(false);
@@ -45,7 +46,7 @@ export function AuthProvider({ children }) {
     if (data.success) {
       setUser(data.user);
       if (data.token) {
-        localStorage.setItem("entp_token", data.token);
+        localStorage.setItem("smart_expenses_token", data.token);
       }
       fetchNotificationCount();
     }
@@ -57,7 +58,7 @@ export function AuthProvider({ children }) {
     if (data.success) {
       setUser(data.user);
       if (data.token) {
-        localStorage.setItem("entp_token", data.token);
+        localStorage.setItem("smart_expenses_token", data.token);
       }
       fetchNotificationCount();
     }
@@ -71,12 +72,13 @@ export function AuthProvider({ children }) {
       // ignore
     } finally {
       setUser(null);
+      localStorage.removeItem("smart_expenses_token");
       localStorage.removeItem("entp_token");
     }
   }
 
   async function loginAsDemo() {
-    return login("demo@entp.app", "Password@123");
+    return login("demo@smartexpenses.app", "Password@123");
   }
 
   return (

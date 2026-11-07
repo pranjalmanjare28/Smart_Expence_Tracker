@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 const { getDatabase } = require("../src/config/db");
 
 async function seed() {
-  console.log("🌱 Starting ENTP seed script...");
+  console.log("🌱 Starting Smart Expenses Tracker seed script...");
   const db = getDatabase();
 
   const passwordHash = await bcrypt.hash("Password@123", 10);
@@ -11,7 +11,7 @@ async function seed() {
     const s = db.sqlite;
 
     // Check if demo user already exists
-    const existing = s.prepare("SELECT id FROM users WHERE email = ?").get("demo@entp.app");
+    const existing = s.prepare("SELECT id FROM users WHERE email = ?").get("demo@smartexpenses.app");
     if (existing) {
       console.log("Demo user already exists. Skipping duplicate seeding.");
       return;
@@ -26,9 +26,9 @@ async function seed() {
     const rahulId = "user-demo-rahul";
     const ananyaId = "user-demo-ananya";
 
-    insertUser.run(pranjalId, "Pranjal Manjare", "demo@entp.app", passwordHash, "P");
-    insertUser.run(rahulId, "Rahul Sharma", "rahul@entp.app", passwordHash, "R");
-    insertUser.run(ananyaId, "Ananya Iyer", "ananya@entp.app", passwordHash, "A");
+    insertUser.run(pranjalId, "Pranjal Manjare", "demo@smartexpenses.app", passwordHash, "P");
+    insertUser.run(rahulId, "Rahul Sharma", "rahul@smartexpenses.app", passwordHash, "R");
+    insertUser.run(ananyaId, "Ananya Iyer", "ananya@smartexpenses.app", passwordHash, "A");
 
     // Budgets for Pranjal
     const insertBudget = s.prepare(`
@@ -109,12 +109,12 @@ async function seed() {
 
     // Notifications
     const insertNotif = s.prepare("INSERT INTO notifications (id, userId, title, message, type) VALUES (?, ?, ?, ?, ?)");
-    insertNotif.run("notif-1", pranjalId, "Welcome to ENTP!", "Start tracking personal and shared expenses effortlessly.", "SYSTEM");
+    insertNotif.run("notif-1", pranjalId, "Welcome to Smart Expenses Tracker!", "Start tracking personal and shared expenses effortlessly.", "SYSTEM");
     insertNotif.run("notif-2", pranjalId, "Group Expense Added", "Rahul added Airtel Fiber Bill (₹1,500) to Apartment 402.", "GROUP_EXPENSE");
     insertNotif.run("notif-3", pranjalId, "Budget Update", "You have utilized 32% of your monthly budget. Spending is healthy.", "BUDGET_ALERT");
 
     console.log("✅ Fictional demo dataset seeded successfully into local database!");
-    console.log("Demo credentials: demo@entp.app / Password@123");
+    console.log("Demo credentials: demo@smartexpenses.app / Password@123");
   }
 }
 

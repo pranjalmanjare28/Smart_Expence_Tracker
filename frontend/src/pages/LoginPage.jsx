@@ -49,15 +49,15 @@ export default function LoginPage() {
       {/* Brand logo */}
       <div className="text-center mb-8">
         <Link to="/" className="inline-flex items-center gap-2.5">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-indigo-500/20">
-            E
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-indigo-500/20">
+            S
           </div>
           <span className="font-extrabold text-2xl text-slate-800 tracking-tight">
-            ENTP
+            Smart Expenses
           </span>
         </Link>
         <p className="text-xs font-semibold tracking-wider text-indigo-600 uppercase mt-1">
-          Expense Tracker System
+          Tracker System
         </p>
       </div>
 

@@ -306,7 +306,7 @@ export default function SettingsPage() {
         </div>
 
         <p className="text-xs text-slate-600 leading-relaxed mb-4">
-          Permanently delete your ENTP user account and all personal expense history, budgets, and recurring rules.
+          Permanently delete your Smart Expenses Tracker account and all personal expense history, budgets, and recurring rules.
           This action is immediate and non-reversible.
         </p>
 

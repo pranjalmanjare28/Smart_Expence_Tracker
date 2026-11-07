@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Sidebar from "./components/Sidebar";
@@ -29,7 +29,7 @@ function ProtectedLayout() {
         <div className="flex flex-col items-center gap-3">
           <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
           <p className="text-xs font-semibold text-slate-500 tracking-wider uppercase">
-            Loading ENTP...
+            Loading Smart Expenses Tracker...
           </p>
         </div>
       </div>

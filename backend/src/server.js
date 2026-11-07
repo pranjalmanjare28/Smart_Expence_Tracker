@@ -10,14 +10,14 @@ async function startServer() {
     await checkDatabaseConnection();
 
     const server = app.listen(PORT, () => {
-      console.log(`🚀 [ENTP Server] Running on http://localhost:${PORT}`);
-      console.log(`📡 [ENTP Health] Check http://localhost:${PORT}/api/health`);
+      console.log(`🚀 [Server] Running on http://localhost:${PORT}`);
+      console.log(`📡 [Health Check] http://localhost:${PORT}/api/health`);
     });
 
     const shutdown = async (signal) => {
       console.log(`\n🛑 Received ${signal}. Gracefully terminating server...`);
       server.close(() => {
-        console.log("👋 ENTP server closed cleanly.");
+        console.log("👋 Server closed cleanly.");
         process.exit(0);
       });
     };
@@ -25,7 +25,7 @@ async function startServer() {
     process.on("SIGINT", () => shutdown("SIGINT"));
     process.on("SIGTERM", () => shutdown("SIGTERM"));
   } catch (error) {
-    console.error("❌ Fatal error starting ENTP backend:", error);
+    console.error("❌ Fatal error starting backend server:", error);
     process.exit(1);
   }
 }

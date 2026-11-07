@@ -1,9 +1,8 @@
-<<<<<<< HEAD
-# ENTP — Expense Tracker System
+# Smart Expenses Tracker — Full-Stack Financial Platform
 
 <div align="center">
 
-![ENTP Banner](https://img.shields.io/badge/ENTP-Expense%20Tracker%20System-6366f1?style=for-the-badge)
+![Smart Expenses Tracker Banner](https://img.shields.io/badge/Smart%20Expenses-Tracker%20System-6366f1?style=for-the-badge)
 ![React 19](https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react)
 ![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=flat-square&logo=tailwindcss)
 ![Node.js Express](https://img.shields.io/badge/Node.js-Express%205-68a063?style=flat-square&logo=node.js)
@@ -12,7 +11,7 @@
 
 **A modern, responsive full-stack financial management platform designed for college students, young adults, working professionals, and groups of friends sharing expenses.**
 
-[Features](#-key-features) • [Design System](#-design-system) • [Tech Stack](#-technology-stack) • [Quick Start](#-quick-start) • [Database Architecture](#-database-architecture) • [Testing](#-testing--quality) • [API Documentation](#-api-documentation)
+[Features](#-key-features) • [Design System](#-design-system) • [Tech Stack](#-technology-stack) • [Quick Start](#-quick-start) • [Render Deployment](#-deployment-to-render) • [Database Architecture](#-database-architecture) • [API Documentation](#-api-documentation)
 
 </div>
 
@@ -31,7 +30,7 @@
 - Record personal expenses with amounts, descriptions, categories, payment methods (UPI, Card, Cash, Net Banking), dates, and notes.
 - Categories supported: **Food**, **Transport**, **Shopping**, **Entertainment**, **Education**, **Bills**, **Healthcare**, and **Other**.
 - Full-text search, category filters, date-range filters, and pagination.
-- Instant calculation updates backed by PostgreSQL/relational storage.
+- Instant calculation updates backed by relational storage.
 
 ### 3. 🎯 Budget Control
 - Set overall monthly budgets or category-specific spending targets.
@@ -62,25 +61,13 @@
 
 ---
 
-## 🎨 Design System
-
-Designed around a modern financial palette:
-- **Soft Lavender** (`#8B5CF6`, `#F5F3FF`)
-- **Warm Off-White** (`#F8FAFC`, `#F1F5F9`)
-- **Muted Blue** (`#3B82F6`)
-- **Subtle Mint** (`#10B981`)
-- **Glassmorphic Paneling**: Subtle translucent backdrops (`rgba(255, 255, 255, 0.85)` with backdrop blur), rounded cards (`rounded-2xl`), accessible color contrast, and responsive collapsible navigation.
-- **Currency & Regional Formats**: Strict Indian Rupee formatting (`₹#,##,###.##`) and Indian date format (`DD/MM/YYYY`).
-
----
-
 ## 💻 Technology Stack
 
 | Layer | Technologies |
 | :--- | :--- |
 | **Frontend** | React 19, Vite 8, React Router 7, Tailwind CSS v4, Lucide React, Recharts |
 | **Backend** | Node.js v22, Express 5, Prisma ORM 7, bcryptjs, jsonwebtoken, Zod, Helmet, cookie-parser, express-rate-limit |
-| **Database** | PostgreSQL (Production) + Embedded SQLite ACID Fallback (Zero-friction local dev) |
+| **Database** | MongoDB Atlas / PostgreSQL (Production) + Embedded SQLite ACID Fallback (Zero-friction local dev) |
 | **Testing** | Node native test runner & Supertest (Backend), Vitest & React Testing Library (Frontend) |
 
 ---
@@ -91,49 +78,31 @@ Designed around a modern financial palette:
 - **Node.js** v18+ (tested on Node v22)
 - **npm** v9+
 
-### 2. Clone and Setup Dependencies
+### 2. Setup Dependencies
 ```bash
-git clone https://github.com/your-username/entp.git
-cd entp
-```
-
-Install backend dependencies:
-```bash
+npm install
 npm --prefix backend install
-```
-
-Install frontend dependencies:
-```bash
 npm --prefix frontend install
 ```
 
-### 3. Setup Environment Variables
+### 3. Seed Development Data
+Smart Expenses Tracker comes with an automatic development seed script that creates sample demo users and realistic transactions:
 ```bash
-# In backend/
-copy backend\.env.example backend\.env
-
-# In frontend/
-copy frontend\.env.example frontend\.env
+npm run db:seed
 ```
 
-### 4. Seed Development Data
-ENTP comes with an automatic development seed script that creates sample demo users and realistic transactions:
-```bash
-npm --prefix backend run db:seed
-```
-
-### 5. Run the Application
+### 4. Run Locally
 Open two terminal tabs:
 
 **Terminal 1 — Backend Server:**
 ```bash
-npm --prefix backend run dev
+npm run dev:backend
 ```
 Backend will start at: `http://localhost:5000` (Health check at `http://localhost:5000/api/health`)
 
 **Terminal 2 — Frontend Application:**
 ```bash
-npm --prefix frontend run dev
+npm run dev:frontend
 ```
 Frontend will start at: `http://localhost:5173`
 
@@ -142,87 +111,32 @@ Frontend will start at: `http://localhost:5173`
 ## 🧪 Demo Account Credentials
 
 You can log in instantly by clicking **"One-Click Demo Login"** on the login page or using:
-- **Email:** `demo@entp.app`
+- **Email:** `demo@smartexpenses.app`
 - **Password:** `Password@123`
 
 ---
 
-## 🗄️ Database Architecture
+## 🌐 Deployment to Render
 
-ENTP's schema is normalized and models relational finance:
-- `users`: Credentials, preferences (currency, date format), avatars.
-- `categories`: Pre-seeded default categories with icons and colors.
-- `expenses`: Personal and shared expenses with `DECIMAL(12, 2)` monetary precision.
-- `budgets`: Monthly and category-specific targets with unique constraints `(userId, month, year, categoryId)`.
-- `groups`: Shared flatmate/friend groups.
-- `group_memberships`: Membership roles (`ADMIN`, `MEMBER`).
-- `expense_splits`: Exact participant shares with validation.
-- `settlements`: Recorded debt payments between group members.
-- `recurring_expenses`: Scheduled expense rules with frequencies.
-- `notifications`: User alert notifications.
+This repository is ready for single-service full-stack deployment on [Render](https://render.com):
 
-### PostgreSQL Migrations & Setup
-If running PostgreSQL via Docker or local service:
-```bash
-docker run --name entp-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=entp_db -p 5432:5432 -d postgres:16
-```
-Configure `DATABASE_URL` in `backend/.env`:
-```env
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/entp_db?schema=public"
-```
-Run migrations:
-```bash
-npm --prefix backend run db:migrate
-```
-*Note: If PostgreSQL is not running, ENTP seamlessly defaults to its embedded local ACID SQLite engine (`backend/data/entp.db`) so development never blocks!*
-
----
-
-## 🧪 Testing & Quality
-
-### Run Backend API Tests
-Runs 16 comprehensive integration tests verifying auth, Zod validation, expense CRUD, security data isolation, budget calculations, and debt simplification:
-```bash
-npm --prefix backend test
-```
-Result: **16/16 Passed (100%)**
-
-### Run Frontend Unit Tests
-Runs Vitest tests verifying Indian currency formatters, date formatters, Landing page, Login page, and Register page:
-```bash
-npm --prefix frontend test
-```
-Result: **5/5 Passed (100%)**
-
-### Verify Frontend Production Build
-```bash
-npm --prefix frontend run build
-```
-Result: **Built in < 7s with 0 errors**
-
----
-
-## 📖 API Documentation
-
-Detailed endpoint specifications with request and response payloads are available in:
-- [API Reference Documentation](docs/API.md)
-- [Database Setup Guide](docs/DATABASE.md)
-- [Local Development Setup](docs/SETUP.md)
-
----
-
-## 🛡️ Security Features
-- **HttpOnly Cookies**: Prevents client-side XSS access to authentication tokens.
-- **Rate Limiting**: Protects `/api/auth/login` and `/api/auth/signup` from brute-force attacks.
-- **Password Hashing**: `bcryptjs` with salt work factor 12.
-- **Data Isolation**: Database queries enforce user ownership (`userId`) so no user can access or manipulate another user's financial records.
-- **Sanitized Inputs & Zod Validation**: Strict schema validation on incoming request payloads.
+1. **Create New Web Service** on Render connected to this repository.
+2. **Build Command**:
+   ```bash
+   npm run build
+   ```
+3. **Start Command**:
+   ```bash
+   npm start
+   ```
+4. **Environment Variables**:
+   - `NODE_ENV`: `production`
+   - `JWT_SECRET`: *(a random 32+ character string)*
+   - `MONGODB_URI`: *(Your MongoDB Atlas connection string, e.g. `mongodb+srv://...`)*
+   
+> **Important for MongoDB Atlas:** Under Atlas ➔ **Network Access**, ensure **`0.0.0.0/0` (Allow Access from Anywhere)** is added so Render's dynamic IP addresses can connect.
 
 ---
 
 ## 📄 License
 This project is licensed under the ISC License.
-=======
-# Smart_Expence_Tracker
-A smart expense management system that helps students and individuals track daily expenses, manage budgets, split bills with friends, and monitor spending habits. It offers interactive dashboards, financial reports, recurring expense tracking, CSV exports, and secure authentication for easy and efficient money management.
->>>>>>> ba27dd5d8c2ec2940dacb24c5292d36d9d64e25a

@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const dbService = require("../services/dbService");
 
-const JWT_SECRET = process.env.JWT_SECRET || "entp-super-secure-jwt-secret-2026";
+const JWT_SECRET = process.env.JWT_SECRET || "smart-expenses-tracker-jwt-secret-2026";
 
 async function protect(req, res, next) {
   try {

@@ -3,8 +3,8 @@ const { getDatabase } = require("../backend/src/config/db");
 const db = getDatabase();
 const s = db.sqlite;
 
-console.log("\n==================== 📊 ENTP DATABASE OVERVIEW ====================");
-console.log(`Database File: backend/data/entp.db\n`);
+console.log("\n==================== 📊 SMART EXPENSES TRACKER DATABASE OVERVIEW ====================");
+console.log(`Database File: backend/data/expenses.db\n`);
 
 console.log("👤 USERS TABLE:");
 console.table(s.prepare("SELECT id, name, email, currency, dateFormat FROM users").all());

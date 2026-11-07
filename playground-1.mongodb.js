@@ -1,9 +1,9 @@
 /* global use, db */
-// MongoDB Playground for ENTP — Expense Tracker System
+// MongoDB Playground for Smart Expenses Tracker
 // Connect your MongoDB Atlas cluster in the VS Code MongoDB Extension, then click "Play" ▶ to run this file!
 
-// Select the ENTP database
-use('entp');
+// Select the database
+use('smartexpenses');
 
 // 1. View all recorded expenses
 console.log("=== Recent Expenses ===");

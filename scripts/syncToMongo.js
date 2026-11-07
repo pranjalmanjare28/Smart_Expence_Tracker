@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * ENTP MongoDB Atlas Sync & Seed Script
- * Allows viewing the entire ENTP database in MongoDB Atlas & VS Code MongoDB Extension.
+ * Smart Expenses Tracker MongoDB Atlas Sync & Seed Script
+ * Allows viewing the entire Smart Expenses database in MongoDB Atlas & VS Code MongoDB Extension.
  */
 
 const path = require("path");
@@ -35,18 +35,18 @@ let rawUri = process.argv[2] || process.env.MONGODB_URI;
 if (!rawUri) {
   console.error("❌ Error: Please provide a MongoDB Atlas connection string!");
   console.log("\nExample usage:");
-  console.log('  node scripts/syncToMongo.js "mongodb+srv://user:pass@cluster.mongodb.net/entp?retryWrites=true&w=majority"');
+  console.log('  node scripts/syncToMongo.js "mongodb+srv://user:pass@cluster.mongodb.net/smartexpenses?retryWrites=true&w=majority"');
   process.exit(1);
 }
 
-// Ensure database name 'entp' is included in URI
+// Ensure database name 'smartexpenses' is included in URI if missing
 let mongoUri = rawUri.trim().replace(/^["']|["']$/g, "");
 if (mongoUri.endsWith("/")) {
-  mongoUri += "entp?retryWrites=true&w=majority";
+  mongoUri += "smartexpenses?retryWrites=true&w=majority";
 } else if (mongoUri.endsWith(".mongodb.net")) {
-  mongoUri += "/entp?retryWrites=true&w=majority";
+  mongoUri += "/smartexpenses?retryWrites=true&w=majority";
 } else if (mongoUri.includes("mongodb.net/?")) {
-  mongoUri = mongoUri.replace("mongodb.net/?", "mongodb.net/entp?");
+  mongoUri = mongoUri.replace("mongodb.net/?", "mongodb.net/smartexpenses?");
 }
 
 async function syncToMongo() {
@@ -57,7 +57,7 @@ async function syncToMongo() {
   const db = getDatabase();
   const s = db.sqlite;
 
-  console.log("📦 Syncing ENTP collections to MongoDB Atlas...");
+  console.log("📦 Syncing Smart Expenses collections to MongoDB Atlas...");
 
   // 1. Categories
   const categories = s.prepare("SELECT * FROM categories").all();
@@ -69,7 +69,7 @@ async function syncToMongo() {
   const users = s.prepare("SELECT * FROM users").all();
   await MongoUser.deleteMany({});
   await MongoUser.insertMany(users);
-  console.log(`  ✓ Synced ${users.length} users (demo account: demo@entp.app)`);
+  console.log(`  ✓ Synced ${users.length} users (demo account: demo@smartexpenses.app)`);
 
   // 3. Expenses
   const expenses = s.prepare("SELECT * FROM expenses").all();
@@ -193,7 +193,7 @@ async function syncToMongo() {
   console.log("  1. In VS Code, click the MongoDB leaf icon in the left activity bar.");
   console.log("  2. Click 'Add Connection' / 'Connect with Connection String'.");
   console.log(`  3. Paste: ${mongoUri.replace(/:[^:]*@/, ":****@")}`);
-  console.log("  4. You will see the 'entp' database with collections: users, expenses, budgets, groups, categories, recurring, notifications!");
+  console.log("  4. You will see the database collections: users, expenses, budgets, groups, categories, recurring, notifications!");
 
   await mongoose.disconnect();
   process.exit(0);

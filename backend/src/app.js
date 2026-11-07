@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
+const path = require("path");
+const fs = require("fs");
 
 const authRoutes = require("./routes/authRoutes");
 const expenseRoutes = require("./routes/expenseRoutes");
@@ -16,7 +18,11 @@ const { getDatabase } = require("./config/db");
 const app = express();
 
 // Security HTTP headers
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
 
 // CORS configuration
 const allowedOrigins = [
@@ -28,10 +34,10 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== "production") {
         callback(null, true);
       } else {
-        callback(null, true); // Permissive in dev if needed
+        callback(null, true);
       }
     },
     credentials: true,
@@ -47,20 +53,11 @@ app.get("/api/health", (req, res) => {
   const db = getDatabase();
   res.json({
     status: "healthy",
-    service: "ENTP — Expense Tracker System API",
+    service: "Smart Expenses Tracker API",
     version: "1.0.0",
     databaseEngine: db.engine,
     timestamp: new Date().toISOString(),
     uptimeSeconds: Math.floor(process.uptime()),
-  });
-});
-
-// Root info
-app.get("/", (req, res) => {
-  res.json({
-    name: "ENTP — Expense Tracker System API",
-    version: "1.0.0",
-    docs: "/api/health",
   });
 });
 
@@ -73,13 +70,33 @@ app.use("/api/recurring", recurringRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/notifications", notificationRoutes);
 
-// 404 handler for unknown routes
-app.use((req, res) => {
+// 404 for unmatched /api requests
+app.use("/api", (req, res) => {
   res.status(404).json({
     success: false,
-    message: `Route not found: ${req.method} ${req.originalUrl}`,
+    message: `API endpoint not found: ${req.method} ${req.originalUrl}`,
   });
 });
+
+// Serve frontend static build if available (Render full-stack deployment)
+const frontendDist = path.join(__dirname, "../../frontend/dist");
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
+  app.use((req, res, next) => {
+    if (req.method === "GET" && !req.path.startsWith("/api")) {
+      return res.sendFile(path.join(frontendDist, "index.html"));
+    }
+    next();
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.json({
+      name: "Smart Expenses Tracker API",
+      version: "1.0.0",
+      docs: "/api/health",
+    });
+  });
+}
 
 // Centralized error handler
 app.use(errorHandler);

@@ -443,7 +443,7 @@ export default function GroupDetailPage() {
               <input
                 type="text"
                 required
-                placeholder="e.g. rahul@entp.app"
+                placeholder="e.g. rahul@example.com"
                 value={memberEmail}
                 onChange={(e) => setMemberEmail(e.target.value)}
                 className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"

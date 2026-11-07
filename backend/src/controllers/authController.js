@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const { z } = require("zod");
 const dbService = require("../services/dbService");
 
-const JWT_SECRET = process.env.JWT_SECRET || "entp-super-secure-jwt-secret-2026";
+const JWT_SECRET = process.env.JWT_SECRET || "smart-expenses-tracker-jwt-secret-2026";
 const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
@@ -80,7 +80,7 @@ async function signup(req, res, next) {
     // Create welcome notification
     await dbService.createNotification({
       userId: user.id,
-      title: "Welcome to ENTP!",
+      title: "Welcome to Smart Expenses Tracker!",
       message: "Your financial tracker is ready. Set your monthly budget and log your first expense.",
       type: "SYSTEM",
     });

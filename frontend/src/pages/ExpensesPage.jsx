@@ -95,7 +95,7 @@ export default function ExpensesPage() {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `entp-expenses-${new Date().toISOString().split("T")[0]}.csv`;
+      a.download = `smart-expenses-${new Date().toISOString().split("T")[0]}.csv`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);

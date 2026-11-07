@@ -1,6 +1,6 @@
-# ENTP — Database Architecture & Setup Guide
+# Smart Expenses Tracker — Database Architecture & Setup Guide
 
-ENTP uses a normalized, production-grade relational database schema powered by **PostgreSQL** and **Prisma ORM**, with an automatic local ACID engine fallback (SQLite) for seamless zero-setup development.
+Smart Expenses Tracker uses a normalized, production-grade relational database schema powered by **PostgreSQL** and **Prisma ORM**, with an automatic local ACID engine fallback (SQLite) for seamless zero-setup development.
 
 ---
 
@@ -110,13 +110,13 @@ All monetary amounts are strictly stored as `NUMERIC(12, 2)` / `DECIMAL(12, 2)` 
 ### Prerequisites
 Install PostgreSQL locally or run via Docker:
 ```bash
-docker run --name entp-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=entp_db -p 5432:5432 -d postgres:16
+docker run --name smartexpenses-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=smartexpenses_db -p 5432:5432 -d postgres:16
 ```
 
 ### Configure Environment
 In `backend/.env`:
 ```env
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/entp_db?schema=public"
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/smartexpenses_db?schema=public"
 ```
 
 ### Apply Migrations
@@ -137,4 +137,4 @@ npm --prefix backend run db:seed
 
 ## 3. Resilient Local Development Mode
 
-If PostgreSQL is not running on port 5432, ENTP automatically activates its embedded local ACID SQLite engine (`backend/data/entp.db`) with identical relational schemas, foreign keys, and indexes. When ready to transition to PostgreSQL, simply configure `DATABASE_URL` in `backend/.env` and run migrations.
+If PostgreSQL is not running on port 5432, Smart Expenses Tracker automatically activates its embedded local ACID SQLite engine (`backend/data/expenses.db`) with identical relational schemas, foreign keys, and indexes. When ready to transition to PostgreSQL, simply configure `DATABASE_URL` in `backend/.env` and run migrations.

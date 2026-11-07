@@ -9,7 +9,7 @@ async function request(endpoint, options = {}) {
   };
 
   // Support fallback token if stored
-  const token = localStorage.getItem("entp_token");
+  const token = localStorage.getItem("smart_expenses_token") || localStorage.getItem("entp_token");
   if (token && !headers["Authorization"]) {
     headers["Authorization"] = `Bearer ${token}`;
   }

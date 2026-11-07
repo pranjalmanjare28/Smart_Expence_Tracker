@@ -14,7 +14,15 @@ function initSqlite() {
     fs.mkdirSync(dataDir, { recursive: true });
   }
 
-  const dbPath = path.join(dataDir, "entp.db");
+  const dbPath = path.join(dataDir, "expenses.db");
+  const legacyDb = path.join(dataDir, "entp.db");
+  if (fs.existsSync(legacyDb) && !fs.existsSync(dbPath)) {
+    try {
+      fs.renameSync(legacyDb, dbPath);
+    } catch {
+      // ignore
+    }
+  }
   sqliteDb = new DatabaseSync(dbPath);
   sqliteDb.exec("PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;");
   sqliteDb.transaction = (fn) => (...args) => {
@@ -211,7 +219,11 @@ async function checkDatabaseConnection() {
 
   const databaseUrl = process.env.DATABASE_URL;
 
-  if (databaseUrl && !databaseUrl.includes("localhost:5432/entp_db")) {
+  if (
+    databaseUrl &&
+    (databaseUrl.startsWith("postgres://") || databaseUrl.startsWith("postgresql://")) &&
+    !databaseUrl.includes("localhost:5432/sample_db")
+  ) {
     try {
       prisma = new PrismaClient();
       await prisma.$connect();
@@ -228,7 +240,7 @@ async function checkDatabaseConnection() {
   // Fallback to SQLite
   initSqlite();
   activeEngine = "sqlite";
-  console.log("⚡ [Database] Local ACID SQLite database engine active (data/entp.db). Full PostgreSQL migration ready via 'npm run db:migrate'.");
+  console.log("⚡ [Database] Local database active.");
   return { success: true, engine: "sqlite" };
 }
 

@@ -9,7 +9,7 @@ let createdExpenseId = "";
 let createdGroupId = "";
 let secondaryUserToken = "";
 
-describe("ENTP Backend API Test Suite", () => {
+describe("Smart Expenses Tracker Backend API Test Suite", () => {
   before(async () => {
     process.env.NODE_ENV = "test";
     await checkDatabaseConnection();
@@ -25,7 +25,7 @@ describe("ENTP Backend API Test Suite", () => {
 
   // 2. Auth tests
   test("POST /api/auth/signup registers a new user", async () => {
-    const uniqueEmail = `test_${Date.now()}@entp.app`;
+    const uniqueEmail = `test_${Date.now()}@smartexpenses.app`;
     const res = await request(app)
       .post("/api/auth/signup")
       .send({
@@ -132,7 +132,7 @@ describe("ENTP Backend API Test Suite", () => {
       .post("/api/auth/signup")
       .send({
         name: "Secondary User",
-        email: `secondary_${Date.now()}@entp.app`,
+        email: `secondary_${Date.now()}@smartexpenses.app`,
         password: "Password@123",
       });
     secondaryUserToken = secRes.body.token;

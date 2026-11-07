@@ -10,7 +10,6 @@ import {
   Settings,
   LogOut,
   ChevronLeft,
-  ChevronRight,
   ShieldAlert,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
@@ -34,7 +33,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
     { name: "Settings", path: "/settings", icon: Settings },
   ];
 
-  const isDemo = user?.email === "demo@entp.app";
+  const isDemo = user?.email === "demo@smartexpenses.app" || user?.email === "demo@entp.app";
 
   return (
     <>
@@ -55,15 +54,15 @@ export default function Sidebar({ isOpen, setIsOpen }) {
           {/* Brand header */}
           <div className="flex items-center justify-between p-5 border-b border-slate-100">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-indigo-500/20">
-                E
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-indigo-500/20">
+                S
               </div>
               <div>
-                <h1 className="font-bold text-slate-800 text-lg leading-tight tracking-tight">
-                  ENTP
+                <h1 className="font-bold text-slate-800 text-base leading-tight tracking-tight">
+                  Smart Expenses
                 </h1>
                 <p className="text-[10px] font-semibold tracking-wider text-indigo-600 uppercase">
-                  Expense Tracker
+                  Tracker
                 </p>
               </div>
             </div>

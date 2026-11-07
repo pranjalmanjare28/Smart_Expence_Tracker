@@ -8,7 +8,7 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import { AuthProvider } from "../context/AuthContext";
 
-describe("ENTP Frontend Formatters", () => {
+describe("Smart Expenses Tracker Formatters", () => {
   it("formats Indian Rupee (INR) amounts correctly", () => {
     const formatted = formatINR(1500);
     expect(formatted).toContain("1,500");
@@ -23,7 +23,7 @@ describe("ENTP Frontend Formatters", () => {
 });
 
 describe("Landing Page Component", () => {
-  it("renders ENTP brand identity and hero call-to-action", () => {
+  it("renders Smart Expenses Tracker brand identity and hero call-to-action", () => {
     render(
       <AuthProvider>
         <BrowserRouter>
@@ -32,7 +32,7 @@ describe("Landing Page Component", () => {
       </AuthProvider>
     );
 
-    expect(screen.getAllByText("ENTP").length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Smart Expenses/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/Master your spending/i)).toBeInTheDocument();
     expect(screen.getByText(/Start Tracking Now/i)).toBeInTheDocument();
     expect(screen.getByText(/Explore Demo Experience/i)).toBeInTheDocument();
