@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ENTP — Expense Tracker System
 
 <div align="center">
@@ -221,3 +222,7 @@ Detailed endpoint specifications with request and response payloads are availabl
 
 ## 📄 License
 This project is licensed under the ISC License.
+=======
+# Smart_Expence_Tracker
+A smart expense management system that helps students and individuals track daily expenses, manage budgets, split bills with friends, and monitor spending habits. It offers interactive dashboards, financial reports, recurring expense tracking, CSV exports, and secure authentication for easy and efficient money management.
+>>>>>>> ba27dd5d8c2ec2940dacb24c5292d36d9d64e25a
