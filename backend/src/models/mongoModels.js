@@ -1,7 +1,9 @@
+
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema(
   {
+    id: { type: String, index: true },
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     password: { type: String, required: true },
@@ -14,6 +16,7 @@ const UserSchema = new mongoose.Schema(
 
 const CategorySchema = new mongoose.Schema(
   {
+    id: { type: String, index: true },
     name: { type: String, required: true, unique: true },
     icon: { type: String, required: true },
     color: { type: String, required: true },
@@ -24,6 +27,7 @@ const CategorySchema = new mongoose.Schema(
 
 const ExpenseSchema = new mongoose.Schema(
   {
+    _id: { type: String },
     userId: { type: String, required: true, index: true },
     categoryId: { type: String, required: true },
     groupId: { type: String, default: null, index: true },
@@ -49,6 +53,7 @@ const ExpenseSchema = new mongoose.Schema(
 
 const BudgetSchema = new mongoose.Schema(
   {
+    _id: { type: String },
     userId: { type: String, required: true, index: true },
     categoryId: { type: String, default: null },
     month: { type: Number, required: true },
@@ -61,6 +66,7 @@ BudgetSchema.index({ userId: 1, month: 1, year: 1, categoryId: 1 }, { unique: tr
 
 const GroupSchema = new mongoose.Schema(
   {
+    _id: { type: String },
     name: { type: String, required: true },
     description: { type: String, default: "" },
     createdById: { type: String, required: true },
@@ -91,6 +97,7 @@ const GroupSchema = new mongoose.Schema(
 
 const RecurringExpenseSchema = new mongoose.Schema(
   {
+    _id: { type: String },
     userId: { type: String, required: true, index: true },
     categoryId: { type: String, required: true },
     amount: { type: Number, required: true },
@@ -107,6 +114,7 @@ const RecurringExpenseSchema = new mongoose.Schema(
 
 const NotificationSchema = new mongoose.Schema(
   {
+    _id: { type: String },
     userId: { type: String, required: true, index: true },
     title: { type: String, required: true },
     message: { type: String, required: true },
